@@ -100,19 +100,23 @@ function bindStateToDom(state, element, options){
       if (typeof(state[i]) === "object") {
         // Note: arrays are also objects
 
+        
         // This method is called when a child is updated
         // So we can perform actions when a part of a subTree is updated
         state[i]._set = (subState) => {
           state[i]._updaters.map((fn) => fn(subState));
         };
-
+        
+        // We need to keep the pointer for some callbacks
+        let state_i = state[i];
+        
         // This method can be used to safely delete an element
         state[i]._delete = (item) => {
           item = parseInt(item);
           // Call dom deleter for item if it exists
-          state[i][item]._domDeleters.map( (fn) => fn() );
+          state_i[item]._domDeleters.map( (fn) => fn(item) );
           
-          state[i].splice(item, 1);
+          state_i.splice(item, 1);
         };
 
         // This will keep a list of functions to call
@@ -141,14 +145,14 @@ function bindStateToDom(state, element, options){
             index = state[i].length - 1;
           } else {
             index = parseInt(index);
-            state[i].splice(index, 1, value);
+            state[i].splice(index, 0, value);
           }
           
           // Prepare added part of state
           prepareState(state[i]);
 
           // Call functions that create the dom elements
-          state[i]._domAppenders.map( (fn) => fn(state[i], index) );
+          state[i]._domAppenders.map( (fn) => fn(state_i, index) );
           // Call updaters of parent object
           state[i]._set();
           
@@ -164,11 +168,12 @@ function bindStateToDom(state, element, options){
         // This will keep a list of functions to call
         // When deleting an object
         state[i]._domDeleters = [];
+        let state_i = state[i];
         // The access point to modify and get values
         state[i]._get = () => ( state[i]._value_do_not_modify );
         state[i]._set = (newValue) => {
-          state[i]._updaters.map((fn) => fn(newValue));
-          state[i]._value_do_not_modify = newValue;
+          state_i._updaters.map((fn) => fn(newValue));
+          state_i._value_do_not_modify = newValue;
           // Call parent updaters
           state._set(state);
         };
@@ -298,6 +303,22 @@ function bindStateToDom(state, element, options){
     if(Array.isArray(currentStateObject)){
       let container = document.createElement(el.nodeName);
 
+      let increaseAfter = (parent, index, amount) => {
+        // Increment next iterators
+        // Replace $i by iterator value
+        let nodes = parent.querySelectorAll("[data-map-to*=\\$"+iterator+"]");
+        
+        // Increment aliases when appending
+        let replaceAttributes = (node) => {
+          let value = parseInt(node.getAttribute("data-alias-" + iterator));
+          if(value >= index){
+            node.setAttribute("data-alias-"+iterator, value + amount);
+          }
+        };
+
+        nodes.forEach(replaceAttributes);
+      };
+      
       let domAppender = (currentStateObject, i) => {
         // Skip our control variables
         if(i[0] == '_') {
@@ -317,6 +338,7 @@ function bindStateToDom(state, element, options){
           }
         }
 
+        // The template was hidden, but we want our node to be shown
         domRow.style.display = null;
         
         // Replace $i by iterator value
@@ -330,21 +352,9 @@ function bindStateToDom(state, element, options){
         nodes.forEach(replaceAttributes);
         
         // Perform deletion
-        currentStateObject[i]._domDeleters.push(() => {
+        currentStateObject[i]._domDeleters.push((item) => {
           // Decrement next iterators
-          // Replace $i by iterator value
-          let nodes = domRow.parentNode.querySelectorAll("[data-map-to*=\\$"+iterator+"]");
-          
-          let replaceAttributes = (node) => {
-            let value = parseInt(node.getAttribute("data-alias-" + iterator));
-            if(value >= i){
-              node.setAttribute("data-alias-"+iterator, value-1);
-            }
-          };
-          
-          // Change aliases for each sub nodes
-          nodes.forEach(replaceAttributes);
-          
+          increaseAfter(domRow.parentNode, item + 1, -1);
           domRow.parentNode.removeChild(domRow);
         });
         
@@ -352,9 +362,18 @@ function bindStateToDom(state, element, options){
         if(domRow.getAttribute("data-map-to") != null){
           replaceAttributes(domRow);
         }
-        
+
+        // Link new element to state
         bindStateToDom(state, domRow);
-        container.appendChild(domRow);
+        
+        // Actually append the dom to container
+        if(i == container.children.length) {
+          // Add at the end
+          container.appendChild(domRow);
+        } else {
+          increaseAfter(container, i, 1);
+          container.insertBefore(domRow, container.children[i]);
+        }
       };
 
       // Append all objects already in state
