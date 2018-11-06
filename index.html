@@ -5,6 +5,9 @@
 		<link rel="stylesheet" href="style.css">
 		<!-- Compiled and minified CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<link rel="import" id="the-script" href="script.js">
+		<link rel="stylesheet"
+			  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
 
 	</head>
 	<body>
@@ -12,44 +15,85 @@
 			<div class="nav-wrapper">
 				<a href="#" class="brand-logo">bindStateToDom</a>
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a href="sass.html">Github</a></li>
+					<li><a href="https://github.com/antoineMoPa/bindStateToDom">Github</a></li>
 				</ul>
 			</div>
 		</nav>
-
+		<div class="row content">
+			<div class="col m12 center-align">
+				<h2>You might not need a frontend library</h2>
+				<p>One very common problem with vanilla JS is the pain of binding data to variables.</p>
+				<p>This project aims to create a very small function that allows bidirectionnal data binding with the DOM.</p>
+				<br>
+				<p>Extend and modify as you wish, this is only a starting point.</p>
+			</div>
+		</div>
 		<div class="row">
+			<div class="col m12">
+				<h2>Caveats</h2>
+				<ul class="browser-default">
+					<li>Coded in one day</li>
+					<li>Arrays not mutable (yet)</li>
+				</ul>
+			</div>
+			<div class="col m12">
+				<h2>Demo</h2>
+				<p>The next content shows everything that works</p>
+			</div>
 			<div class="col m6">
+				
 				<h3>Array</h3>
 				<p data-loop="i in meal.fruits">
 					<span data-map-to="meal.fruits.$i">
 					</span>
 				</p>
-				<h3>Form</h3>
+				<h3>Form - <span data-map-to="meal.vegetable"></span></h3>
 				<input data-map-to="meal.vegetable">
 				<div>
-					<p data-map-to="meal.vegetable"></p>
+					<label>A user defined output component:</label>
+					<br>
+					<userout data-map-to="meal.vegetable"></userout>
 				</div>
 				
-				<h3>Number</h3>
+				<h3>Number <span data-map-to="meal.vegetableCount"></span></h3>
 				<input type="number" data-map-to="meal.vegetableCount">
-				<div>
-					<p data-map-to="meal.vegetableCount"></p>
-				</div>
-				
-				<h3>Number (Mirror)</h3>
+				<h3>Number (Mirror) - <span data-map-to="meal.vegetableCount"></span></h3>
 				<input type="number" data-map-to="meal.vegetableCount">
-				<div>
-					<p data-map-to="meal.vegetableCount"></p>
-				</div>
 			</div>
 			<div class="col m6">
-				<pre data-map-to="meal"></pre>
+				<h3>The state</h3>
+				<pre>
+state = {
+  meal: {
+    vegetable: <span data-map-to="meal.vegetable"></span>,
+    vegetableCount: <span data-map-to="meal.vegetableCount"></span>,
+    fruits: <span data-loop="i in meal.fruits"><span data-map-to="meal.fruits.$i"></span><span>,</span></span>
+  }
+}
+				</pre>
+			</div>
+			<div class="col m10 offset-m1">
+				<h2>The code - <span data-map-to="lines_of_code"></span> lines, with comments</h2>
+				<pre id="code-container"><code class="javascript"></code></pre>
 			</div>
 		</div>
-			
+		
 		<script src="script.js"></script>
+
+		<script>
+		 /* Fetch code for display */
+		 fetch("script.js").then((response) => {
+			 response.text().then((text) => {
+				 let code = document.getElementById("code-container");
+				 code.innerHTML = text;
+				 hljs.highlightBlock(code);
+				 state.lines_of_code._set(text.split("\n").length);
+			 });
+		 });
+		</script>
+		
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-			
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 	</body>
 </html>
