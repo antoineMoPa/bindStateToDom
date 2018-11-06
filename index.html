@@ -3,12 +3,14 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
 		<!-- Compiled and minified CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 		<link rel="import" id="the-script" href="script.js">
 		<link rel="stylesheet"
 			  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
-
+		
 	</head>
 	<body>
 		<nav>
@@ -26,28 +28,70 @@
 				<p>This project aims to create a very small function that allows bidirectional data binding with the DOM.</p>
 				<br>
 				<p>Extend and modify as you wish, this is only a starting point.</p>
+				<br>
+				<p>This implementation brings no additional render step and builds upon functionnality that already exists in the DOM.</p>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col m12">
+			<div class="col m10 offset-m1">
+				<h2>Usage</h2>
+				<p>Copy paste the bindStateToDom in your code (or in a file) and use it like this:</p>
+				<div class="col m10 offset-m1">
+					<pre><code class="javascript">
+const state = {
+  meal: {
+    vegetable: "Potato",
+    vegetableCount: 42,
+    fruits: [
+      "apple",
+      "tomato",
+      "orange"
+    ]
+  },
+  lines_of_code: '?'
+};
+
+bindStateToDom(state, document.body, {extraComponents: extraComponents});
+
+// To change an element programmatically
+state.meal.vegetable._set("Carrot");
+// To add an element to an array
+state.meal.fruits._append("Pineapple");
+
+					</code></pre>
+				</div>
+			</div>
+			<div class="col m10 offset-m1">
 				<h2>Caveats</h2>
 				<ul class="browser-default">
 					<li>Coded in one day</li>
-					<li>Arrays not mutable (yet)</li>
+					<li>Arrays not mutable (yet) - Day 2 update: You can append to arrays</li>
 					<li>You have to set state with myparameter._set(), since __defineSetter__ is not used</li>
 				</ul>
 			</div>
-			<div class="col m12">
+			<div class="col m10 offset-m1">
 				<h2>Demo</h2>
 				<p>The next content shows everything that works</p>
 			</div>
-			<div class="col m6">
+			<div class="col m5 offset-m1">
 				
 				<h3>Array</h3>
-				<p data-loop="i in meal.fruits">
-					<span data-map-to="meal.fruits.$i">
-					</span>
-				</p>
+				<div data-loop="i in meal.fruits" class="row">
+					<div class="col s8">
+						<label>Array element - <span data-map-to="meal.fruits.$i"></span></label>
+						<input data-map-to="meal.fruits.$i">
+					</input>
+					</div>
+					<div class="col s4">
+						<label>Delete this element</label><br>
+						<delete-button class="btn" data-map-to="meal.fruits.$i">
+							Delete <span data-map-to="meal.fruits.$i"></span>
+						</delete-button>
+					</div>
+				</div>
+				<append-button class="btn" data-map-to="meal.fruits">
+					Add element
+				</append-button>
 				<h3>Form - <span data-map-to="meal.vegetable"></span></h3>
 				<input data-map-to="meal.vegetable">
 				<div>
@@ -61,7 +105,7 @@
 				<h3>Number (Mirror) - <span data-map-to="meal.vegetableCount"></span></h3>
 				<input type="number" data-map-to="meal.vegetableCount">
 			</div>
-			<div class="col m6">
+			<div class="col m5">
 				<h3>The state</h3>
 				<pre>
 state = {
@@ -86,7 +130,7 @@ state = {
 		</div>
 		
 		<script src="script.js"></script>
-
+		
 		<script>
 		 /* Fetch code for display */
 		 fetch("script.js").then((response) => {
@@ -98,7 +142,32 @@ state = {
 			 });
 		 });
 		</script>
-		
+		<script>
+		 // The demo
+		 // Our example state
+		 const state = {
+			 meal: {
+				 vegetable: "Potato",
+				 vegetableCount: 42,
+				 fruits: [
+					 "apple",
+					 "tomato",
+					 "orange"
+				 ]
+			 },
+			 lines_of_code: '?'
+		 };
+
+		 // This is how you would add new components
+		 const extraComponents = {
+			 "potatoout": {
+				 domValueGetter: (el) => ( el.innerText ),
+				 domValueSetter: (el, newValue) => ( el.innerText = "🥔" + newValue + "🥔" )
+			 }
+		 };
+
+		 bindStateToDom(state, document.body, {extraComponents: extraComponents});
+		</script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>

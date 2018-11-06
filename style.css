@@ -7,3 +7,12 @@ body{
 .brand-logo{
 	left: 20px;
 }
+
+
+.hljs-comment{
+	color:#000!important;
+}
+
+.hljs {
+    color: #666!important;
+}
