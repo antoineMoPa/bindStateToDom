@@ -23,7 +23,7 @@
 			<div class="col m12 center-align">
 				<h2>You might not need a frontend library</h2>
 				<p>One very common problem with vanilla JS is the pain of binding data to variables.</p>
-				<p>This project aims to create a very small function that allows bidirectionnal data binding with the DOM.</p>
+				<p>This project aims to create a very small function that allows bidirectional data binding with the DOM.</p>
 				<br>
 				<p>Extend and modify as you wish, this is only a starting point.</p>
 			</div>
@@ -34,6 +34,7 @@
 				<ul class="browser-default">
 					<li>Coded in one day</li>
 					<li>Arrays not mutable (yet)</li>
+					<li>You have to set state with myparameter._set(), since __defineSetter__ is not used</li>
 				</ul>
 			</div>
 			<div class="col m12">
@@ -50,9 +51,9 @@
 				<h3>Form - <span data-map-to="meal.vegetable"></span></h3>
 				<input data-map-to="meal.vegetable">
 				<div>
-					<label>A user defined output component:</label>
+					<h3>&lt;potatoout&gt; A user defined output component</h3>
 					<br>
-					<userout data-map-to="meal.vegetable"></userout>
+					<potatoout data-map-to="meal.vegetable"></potatoout>
 				</div>
 				
 				<h3>Number <span data-map-to="meal.vegetableCount"></span></h3>
@@ -75,6 +76,12 @@ state = {
 			<div class="col m10 offset-m1">
 				<h2>The code - <span data-map-to="lines_of_code"></span> lines, with comments</h2>
 				<pre id="code-container"><code class="javascript"></code></pre>
+			</div>
+			<div class="col m12 center-align">
+				<h3>Conclusion</h3>
+				<p>This is just a proof of concept that you don't need all the slugginess some libraries bring to get the benefits of bidirectional data binding</p>
+				<p>Things that are already optimized in the browser, such as querySelectorAll with attribute selectors, can be leveraged to make low-overhead and low-memory footprint data binding.</p>
+				<h3>Have a nice day</h3>
 			</div>
 		</div>
 		

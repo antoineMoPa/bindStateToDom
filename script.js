@@ -227,7 +227,7 @@ const state = {
 };
 
 const extraComponents = {
-  "userout": {
+  "potatoout": {
     domValueGetter: (el) => ( el.innerText ),
     domValueSetter: (el, newValue) => ( el.innerText = "🥔" + newValue + "🥔" )
   }
