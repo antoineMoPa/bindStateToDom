@@ -34,7 +34,7 @@
 		</div>
 		<div class="row">
 			<div class="col m10 offset-m1">
-				<h2>Usage</h2>
+				<h2>bindStateToDom usage</h2>
 				<p>Copy paste the bindStateToDom in your code (or in a file) and use it like this:</p>
 				<div class="col m10 offset-m1">
 					<pre><code class="javascript">
@@ -71,6 +71,11 @@ state.meal.fruits._append(2, "Pineapple");
 					<li>You have to set state with myparameter._set(), since __defineSetter__ is not used</li>
 					<li>No if clause yet, but it could easily be done with a custom component</li>
 					<li>Low level, prioritizes speed for end user over developer convenience.</li>
+				</ul>
+				<h2>Todo</h2>
+				<ul class="browser-default">
+					<li>"if"/"else" component</li>
+					<li>Hints for templates and single file components</li>
 				</ul>
 				<h2>Why use something like this then?</h2>
 				<p>
@@ -139,6 +144,8 @@ state = {
 				<h4>For more advanced alternatives, also see</h4>
 				<a href="https://kbrsh.github.io/moon/" class="btn" target="_blank">Moon</a>
 				<a href="https://preactjs.com/" class="btn" target="_blank">Preact</a>
+				<h2>You don't need React</h2>
+				<p>As developers, we have the responsibility to save energy and people's CPU. Start by only including the minimal amount of dependencies.</p>
 				
 				<h3>Have a nice day</h3>
 			</div>
