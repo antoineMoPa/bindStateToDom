@@ -16,3 +16,16 @@ body{
 .hljs {
     color: #666!important;
 }
+
+document,
+body,
+.content,
+.code-column,
+.limit-width{
+	max-width:100%;
+}
+
+pre{
+	max-width:100%;
+	overflow-x:scroll;
+}
