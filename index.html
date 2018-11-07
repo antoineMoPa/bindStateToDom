@@ -23,8 +23,12 @@
 		</nav>
 		<div class="row content">
 			<div class="col m12 center-align">
+				<h2>Introduction</h2>
+				<p title="translation:I was just procrastinating some study I had to do.">I was wondering if I could replace Vue.js in one of my <a href="https://shadergif.com" target="_blank">projects</a> by something smaller in 15 minutes.</p>
+				<p>After 2 days, I have a small MVP that supports most of the things I need.</p>
 				<h2>You might not need a frontend library</h2>
-				<p>One very common problem with vanilla JS is the pain of binding data to variables.</p>
+				<p>The problem that most modern JS libraries are solving is binding data to variables in a state.</p>
+				<p>These libraries are often huge and difficult to debug, since a lot of their magic is abstracted.</p>
 				<p>This project aims to create a very small function that allows bidirectional data binding with the DOM.</p>
 				<br>
 				<p>Extend and modify as you wish, this is only a starting point.</p>
@@ -76,6 +80,7 @@ state.meal.fruits._append(2, "Pineapple");
 				<ul class="browser-default">
 					<li>"if"/"else" component</li>
 					<li>Hints for templates and single file components</li>
+					<li>Data serialization (A method to conveniently filter generated parameters starting with '_')</li>
 				</ul>
 				<h2>Why use something like this then?</h2>
 				<p>
@@ -139,13 +144,20 @@ state = {
 			</div>
 			<div class="col m12 center-align">
 				<h3>Conclusion</h3>
+				<p>Implemeting data binding with dynamic arrays is difficult. But I think I got it right.</p>
 				<p>This is just a proof of concept that you don't need all the slugginess some libraries bring to get the benefits of bidirectional data binding</p>
 				<p>Things that are already optimized in the browser, such as querySelectorAll with attribute selectors, can be leveraged to make low-overhead and low-memory footprint data binding.</p>
-				<h4>For more advanced alternatives, also see</h4>
+				<h4>For more advanced alternatives, see</h4>
 				<a href="https://kbrsh.github.io/moon/" class="btn" target="_blank">Moon</a>
 				<a href="https://preactjs.com/" class="btn" target="_blank">Preact</a>
 				<h2>You don't need React</h2>
-				<p>As developers, we have the responsibility to save energy and people's CPU. Start by only including the minimal amount of dependencies.</p>
+				
+				<p>
+					As developers, we have the responsibility to save energy and people's CPU. Start by only including the minimal amount of dependencies! <br>
+					Try living with an old chromebook sometimes.<br>
+					Slow apps generate need for more new faster computers.<br>
+					Keep your apps working on old hardware, reduce power consumption and computer waste.
+				</p>
 				
 				<h3>Have a nice day</h3>
 			</div>
@@ -193,5 +205,6 @@ state = {
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 	</body>
 </html>
